@@ -1,5 +1,6 @@
 {
   "BandwidthThresholdKBps": 200,
   "SamplingIntervalSeconds": 10,
-  "ShutdownDelaySeconds": 60
+  "ShutdownDelaySeconds": 60,
+  "TestingMode": true
 }

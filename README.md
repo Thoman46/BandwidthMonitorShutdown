@@ -5,21 +5,24 @@ This project monitors the network bandwidth of your computer. If the **average r
 ## 🚀 Features
 - Continuously monitors total received bandwidth across all network interfaces.
 - Shuts down the computer if bandwidth stays below the threshold for the specified duration.
-- Simple and configurable via user-editable variables.
+- Editable configuration file to set your own parameters.
+- Testing mode to simulate shutdown without actually turning off the computer (TestMode is on by default).
 - Includes an easy-to-use batch launcher.
 
 ## 🛠️ Files
 - `ShutdownOnLowEthernet.ps1` — PowerShell script that monitors bandwidth and shuts down the system.
 - `RunBandwidthMonitor.bat` — Batch file to easily launch the PowerShell script.
+- `config.json` — User-editable settings file.
 
 ## ⚙️ Configuration
 Edit the `config.json` file to change settings:
 
-| Variable | Description |
-|----------|-------------|
-| `BandwidthThresholdKBps` | Bandwidth threshold (default: 200KB/s) |
-| `SamplingIntervalSeconds` | How often to sample bandwidth (default: 10 seconds) |
-| `ShutdownDelaySeconds` | How long the bandwidth must stay below threshold before shutdown (default: 60 seconds) |
+| Variable                  | Description                                                                            |
+| ------------------------- | -------------------------------------------------------------------------------------- |
+| `BandwidthThresholdKBps`  | Bandwidth threshold (default: 200KB/s)                                                 |
+| `SamplingIntervalSeconds` | How often to sample bandwidth (default: 10 seconds)                                    |
+| `ShutdownDelaySeconds`    | How long the bandwidth must stay below threshold before shutdown (default: 60 seconds) |
+| `TestingMode`             | If true, the script will not shut down the system (default: true)                      |
 
 ## 📋 Requirements
 - Windows operating system
@@ -28,10 +31,9 @@ Edit the `config.json` file to change settings:
 
 ## 📦 How to Use
 1. Clone or download this repository.
-2. Modify `ShutdownOnLowEthernet.ps1` if you want to change the settings.
+2. Modify `config.json` if you want to change the settings.
 3. Run `RunBandwidthMonitor.bat` to start monitoring.
-
-> **Tip:** You can add the batch file to your Windows startup folder to monitor automatically at boot!
+4. After the specified duration of low bandwidth, the system will shut down automatically.
 
 ## ⚖️ License
 This project is licensed under the [MIT License](LICENSE).

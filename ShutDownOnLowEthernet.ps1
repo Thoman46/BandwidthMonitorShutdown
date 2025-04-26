@@ -10,11 +10,13 @@ if (Test-Path $configPath) {
     $bandwidthThresholdBytes = $config.BandwidthThresholdKBps * 1KB
     $samplingIntervalSeconds = $config.SamplingIntervalSeconds
     $shutdownDelaySeconds = $config.ShutdownDelaySeconds
+    $testingMode = $config.TestingMode
 } else {
     Write-Warning "Config file not found. Using default settings."
     $bandwidthThresholdBytes = 200KB
     $samplingIntervalSeconds = 10
     $shutdownDelaySeconds = 60
+    $testingMode = $true
 }
 
 # ============================
@@ -49,6 +51,9 @@ $bandwidthSamples = @()
 
 # Display startup message
 Write-Host "Monitoring network bandwidth... System will shut down if average receive rate drops below $([math]::Round($bandwidthThresholdBytes / 1KB, 2)) KB/s for $shutdownDelaySeconds seconds." -ForegroundColor Cyan
+if ($testingMode) {
+    Write-Host "Testing mode is ENABLED. No shutdown will occur." -ForegroundColor Magenta
+}
 
 # ============================
 # MAIN MONITORING LOOP
@@ -78,12 +83,14 @@ while ($true) {
 
     # Check if shutdown criteria are met
     if ($bandwidthSamples.Count -eq $samplesRequired -and $averageBandwidth -lt $bandwidthThresholdBytes) {
-        Write-Warning "Bandwidth average below threshold for designated monitoring window. Initiating shutdown..."
-        # Uncomment below for testing without shutdown
-        # Write-Host "[TEST MODE] Shutdown would be triggered here."
-
-        # Shut down the system
-        Stop-Computer -Force
+        Write-Warning "Bandwidth average below threshold for designated monitoring window."
+        
+        if ($testingMode) {
+            Write-Host "[TEST MODE] Shutdown would be triggered here." -ForegroundColor Cyan
+        } else {
+            Write-Warning "Initiating system shutdown..."
+            Stop-Computer -Force
+        }
         break
     }
 
